@@ -17,6 +17,8 @@ all_exec_inst = [
     "OpenPostStopMkt", "OpenPostStopMark", "OpenPostStopRef",
 ]
 
+all_position_modes = ["HedgedLong", "HedgedShort", "Net"]
+
 
 @click.command()
 @click.option("--config", type=str, default=None, help="path to the config file")
@@ -33,8 +35,9 @@ all_exec_inst = [
 @click.option("--pos-stop-loss", type=str, default=None)
 @click.option("--pos-take-profit", type=str, default=None)
 @click.option("--resp-inst", type=click.Choice(['ACK', 'ACCEPT', 'DONE']), default="ACCEPT")
+@click.option("--pos-mode", type=click.Choice(all_position_modes), default=None")
 @click.option('--verbose/--no-verbose', default=False)
-def run(config, botname, symbol, price, qty, order_type, side, time_in_force, reduce_only, post_only, exec_inst, pos_stop_loss, pos_take_profit, resp_inst, verbose):
+def run(config, botname, symbol, price, qty, order_type, side, time_in_force, reduce_only, post_only, exec_inst, pos_stop_loss, pos_take_profit, resp_inst, pos_mode, verbose):
     
     cfg = load_config(get_config_or_default(config), botname)
 
@@ -60,6 +63,7 @@ def run(config, botname, symbol, price, qty, order_type, side, time_in_force, re
         execInst = exec_inst,
         posStopLossPrice = pos_stop_loss,
         posTakeProfitPrice = pos_take_profit,
+        positionMode = pos_mode,
         respInst = resp_inst,
     )
 
